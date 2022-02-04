@@ -23,7 +23,7 @@ function getawayBustedCounter()
     end
     if effectActive and startTime then
         if not promptActive then
-			 feedbackSystem.menusMaster.masterSetVariable("iScore_Feedback_Gauge_State", 1)
+			feedbackSystem.menusMaster.masterSetVariable("iScore_Feedback_Gauge_State", 1)
 			feedbackSystem.menusMaster.masterSetTextVariable("score_feedback_gauge", "BUSTED")
              promptActive = true
         end
@@ -39,7 +39,7 @@ function getawayBustedCounter()
             promptActive = false
         end
     end
-    if getawayGameVehicle.damage > 0.995 or not Chase.IsAChaseActive() then
+    if getawayGameVehicle.damage > 0.995 or not Chase.IsAChaseActive() or not localPlayer.currentVehicle then
         bustedCounterCleanUp()
     end
 end
