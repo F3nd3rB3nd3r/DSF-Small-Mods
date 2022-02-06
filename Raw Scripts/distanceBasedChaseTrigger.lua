@@ -41,9 +41,6 @@ local function TriggerChaseWithoutHit()
     removeUserUpdateFunction("3secDelayThenStart")
   end
   distanceFromGetaway, getawayCar = ClosestSuspiciousVehicleFromPlayer()
-  print(startTime)
-  print(delayActive)
-  print(getawayCar)
   if distanceFromGetaway < 15 and not delayActive then
     startTime = g_NetworkTime
     delayActive = true
