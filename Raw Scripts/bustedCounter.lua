@@ -15,6 +15,9 @@ local promptActive = false
 local oneSecRate = 100 / bustedTime
 function getawayBustedCounter()
     local getawayGameVehicle = localPlayer.primaryFelony.getawayGameVehicle
+	if not Chase.IsAChaseActive() or getawayGameVehicle.damage > 0.995 or not localPlayer then
+        bustedCounterCleanUp()
+    end
     if copCars[localPlayer.currentVehicle.gameVehicle.model_id] and
     getawayGameVehicle.speed < maximumBustedSpeed and
     distanceCalculation(getawayGameVehicle,bustedRadius) and not effectActive then
@@ -39,9 +42,6 @@ function getawayBustedCounter()
             promptActive = false
         end
     end
-    if getawayGameVehicle.damage > 0.995 or not Chase.IsAChaseActive() or not localPlayer.currentVehicle then
-        bustedCounterCleanUp()
-    end
 end
 
 function distanceCalculation(getawayGameVehicle,bustedRadius)
@@ -53,11 +53,10 @@ function distanceCalculation(getawayGameVehicle,bustedRadius)
 end
 
 function bustedCounterCleanUp()
-    local getawayGameVehicle = localPlayer.primaryFelony.getawayGameVehicle
+	if localPlayer.primaryFelony.getawayGameVehicle then
+		localPlayer.primaryFelony.getawayGameVehicle.damage = 1
+	end
     feedbackSystem.menusMaster.masterSetVariable("iScore_Feedback_Gauge_State", 0)
-    felony_chase.wrecked(getawayGameVehicle)
-    getawayGameVehicle.damage = 1
-    Chase.StopAll()
     effectActive = false
     startTime = nil
     removeUserUpdateFunction("getawayBustedCounter")
