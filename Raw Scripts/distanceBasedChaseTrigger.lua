@@ -53,3 +53,25 @@ local function TriggerChaseWithoutHit()
     removeUserUpdateFunction("3secDelayThenStart")
   end
 end
+
+function suspiciousVehicleAdded(suspiciousGameVehicle)
+  collision_system.RegisterCollisionCallback(suspiciousGameVehicle, collisionCallback)
+  table.insert(suspiciousVehicles,suspiciousGameVehicle)
+  if #suspiciousVehicles > 0 and not userUpdateActive then
+    addUserUpdateFunction("TriggerChaseWithoutHit",TriggerChaseWithoutHit,10)
+  end
+end
+function suspiciousVehicleRemoved(suspiciousGameVehicle)
+  collision_system.UnRegisterCollisionCallback(suspiciousGameVehicle, collisionCallback)
+  for i = 1, #suspiciousVehicles do
+    if suspiciousVehicles[i] == suspiciousGameVehicle then
+      table.remove(suspiciousVehicles,i)
+      break
+    end
+  end
+  table.remove(suspiciousVehicles,suspiciousGameVehicle)
+  if #suspiciousVehicles == 0 and userUpdateActive then
+    removeUserUpdateFunction("TriggerChaseWithoutHit")
+    userUpdateActive = false
+  end
+end
